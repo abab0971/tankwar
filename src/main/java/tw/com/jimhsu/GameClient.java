@@ -26,6 +26,9 @@ public class GameClient extends JComponent {
         init();
     }
 
+    /**
+     * 畫面更新
+     */
     public void run() {
         new Thread(() -> {
             while (true) {
@@ -44,6 +47,7 @@ public class GameClient extends JComponent {
      */
     public void init() {
         playerTank = new Tank(250, 250, Direction.UP);
+        playerTank.setSpeed(20);
     }
 
     /**
@@ -53,23 +57,20 @@ public class GameClient extends JComponent {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
                 playerTank.setDirection(Direction.UP);
-                playerTank.setY(playerTank.getY() - 5);
                 break;
 
             case KeyEvent.VK_DOWN:
                 playerTank.setDirection(Direction.DOWN);
-                playerTank.setY(playerTank.getY() + 5);
                 break;
             case KeyEvent.VK_LEFT:
                 playerTank.setDirection(Direction.LEFT);
-                playerTank.setX(playerTank.getX() - 5);
                 break;
 
             case KeyEvent.VK_RIGHT:
                 playerTank.setDirection(Direction.RIGHT);
-                playerTank.setX(playerTank.getX() + 5);
                 break;
         }
+        playerTank.move();
     }
 
     public int getScreenWidth() {
