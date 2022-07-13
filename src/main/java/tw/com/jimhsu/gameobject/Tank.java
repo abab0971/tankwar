@@ -9,16 +9,18 @@ public class Tank {
     private int y;
     private int speed;
     private Direction direction;
-    // private boolean[] dirs;
     // 上: bit3, 下: bit2, 左: bit1, 右: bit0
     private int dirs;
 
-    public Tank(int x, int y, Direction direction) {
+    private boolean enemy;
+
+    public Tank(int x, int y, Direction direction, boolean enemy) {
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.speed = 5;
         dirs = 0b0000;
+        this.enemy = enemy;
     }
 
     public int getX() {
@@ -63,26 +65,37 @@ public class Tank {
      * @return
      */
     public Image getImage() {
+        String name = enemy ? "etank" : "itank";
+        String direction;
         switch (this.direction) {
             case UP:
-                return new ImageIcon("assets/images/itankU.png").getImage();
+                direction = "U";
+                break;
             case DOWN:
-                return new ImageIcon("assets/images/itankD.png").getImage();
+                direction = "D";
+                break;
             case LEFT:
-                return new ImageIcon("assets/images/itankL.png").getImage();
+                direction = "L";
+                break;
             case RIGHT:
-                return new ImageIcon("assets/images/itankR.png").getImage();
+                direction = "R";
+                break;
             case UP_LEFT:
-                return new ImageIcon("assets/images/itankLU.png").getImage();
+                direction = "LU";
+                break;
             case UP_RIGHT:
-                return new ImageIcon("assets/images/itankRU.png").getImage();
+                direction = "RU";
+                break;
             case DOWN_LEFT:
-                return new ImageIcon("assets/images/itankLD.png").getImage();
+                direction = "LD";
+                break;
             case DOWN_RIGHT:
-                return new ImageIcon("assets/images/itankRD.png").getImage();
+                direction = "RD";
+                break;
             default:
                 return null;
         }
+        return new ImageIcon(String.format("assets/images/%s%s.png", name, direction)).getImage();
     }
 
     // 避免上下或者左右一起按

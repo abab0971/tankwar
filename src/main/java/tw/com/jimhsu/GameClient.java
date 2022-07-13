@@ -7,12 +7,15 @@ import tw.com.jimhsu.gameobject.Tank;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameClient extends JComponent {
     private int screenWidth;
     private int screenHeight;
 
     private Tank playerTank;
+    private ArrayList<Tank> enemyTank = new ArrayList<Tank>();
 
     GameClient() {
         this(800, 600);
@@ -46,8 +49,14 @@ public class GameClient extends JComponent {
      * 初始化我方坦克方向
      */
     public void init() {
-        playerTank = new Tank(250, 250, Direction.UP);
+        playerTank = new Tank(380, 500, Direction.UP, false);
         playerTank.setSpeed(5);
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                enemyTank.add(new Tank(200 + j * 50, 50 + i * 50, Direction.DOWN, true));
+            }
+        }
     }
 
     /**
@@ -117,5 +126,9 @@ public class GameClient extends JComponent {
         g.fillRect(0, 0, screenWidth, screenHeight);
 
         playerTank.draw(g);
+
+        for (Tank tank : enemyTank) {
+            tank.draw(g);
+        }
     }
 }
