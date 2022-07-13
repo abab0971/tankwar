@@ -20,7 +20,7 @@ public final class App extends JFrame {
         setVisible(true);
 
         // 遊戲區域重新繪製
-        gameClient.repaint();
+        gameClient.run();
 
         // 按鍵偵測
         addKeyListener(new KeyListener() {
@@ -32,6 +32,7 @@ public final class App extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 System.out.println("press! " + e.getKeyChar());
+                gameClient.keyPressed(e);
             }
 
             @Override
