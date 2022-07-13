@@ -1,5 +1,9 @@
 package tw.com.jimhsu.gameobject;
 
+import java.awt.*;
+
+import javax.swing.ImageIcon;;
+
 public class Tank {
     private int x;
     private int y;
@@ -36,5 +40,24 @@ public class Tank {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    /**
+     * 坦克方向圖片
+     * @return
+     */
+    public Image getImage(){
+        switch (this.direction) {
+            case UP:
+                return new ImageIcon("assets/images/itankU.png").getImage();
+            case DOWN:
+                return new ImageIcon("assets/images/itankD.png").getImage();
+            case LEFT:
+                return new ImageIcon("assets/images/itankL.png").getImage();
+            case RIGHT:
+                return new ImageIcon("assets/images/itankR.png").getImage();
+            default:
+                return null;
+        }
     }
 }
