@@ -51,26 +51,48 @@ public class GameClient extends JComponent {
     }
 
     /**
-     * 按鍵事件
+     * 按鍵事件(上緣)
      */
     public void keyPressed(KeyEvent e) {
+        int dirs = playerTank.getDirs();
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                playerTank.setDirection(Direction.UP);
+                dirs |= 0b1000;
                 break;
-
             case KeyEvent.VK_DOWN:
-                playerTank.setDirection(Direction.DOWN);
+                dirs |= 0b0100;
                 break;
             case KeyEvent.VK_LEFT:
-                playerTank.setDirection(Direction.LEFT);
+                dirs |= 0b0010;
                 break;
-
             case KeyEvent.VK_RIGHT:
-                playerTank.setDirection(Direction.RIGHT);
+                dirs |= 0b0001;
                 break;
         }
-        playerTank.move();
+        playerTank.setDirs(dirs);
+        // playerTank.move();
+    }
+
+    /**
+     * 按鍵事件(下緣)
+     */
+    public void keyReleased(KeyEvent e) {
+        int dirs = playerTank.getDirs();
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                dirs &= ~0b1000;
+                break;
+            case KeyEvent.VK_DOWN:
+                dirs &= ~0b0100;
+                break;
+            case KeyEvent.VK_LEFT:
+                dirs &= ~0b0010;
+                break;
+            case KeyEvent.VK_RIGHT:
+                dirs &= ~0b0001;
+                break;
+        }
+        playerTank.setDirs(dirs);
     }
 
     public int getScreenWidth() {
@@ -94,6 +116,6 @@ public class GameClient extends JComponent {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, screenWidth, screenHeight);
 
-        g.drawImage(playerTank.getImage(), playerTank.getX(), playerTank.getY(), null);
+        playerTank.draw(g);
     }
 }

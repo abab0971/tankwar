@@ -38,13 +38,14 @@ public final class App extends JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 System.out.println("release!");
-
+                gameClient.keyReleased(e);
             }
         });
     }
 
     /**
      * 啟動程式
+     * 
      * @param args The arguments of the program.
      */
     public static void main(String[] args) {

@@ -1,6 +1,8 @@
 package tw.com.jimhsu.gameobject;
 
+/**
+ * 方向
+ */
 public enum Direction {
-    // 0, 1, 2, 3
-    UP, DOWN, LEFT, RIGHT
+    UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT
 }
