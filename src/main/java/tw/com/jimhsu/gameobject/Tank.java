@@ -151,10 +151,21 @@ public class Tank {
         }
     }
 
+    /**
+     * 停止移動檢查
+     * 
+     * @return
+     */
+    public boolean isStop() {
+        return this.dirs == 0 ? true : false;
+    }
+
     // 更新畫面
     public void draw(Graphics g) {
-        determineDirection();
-        move();
+        if (!isStop()) {
+            determineDirection();
+            move();
+        }
         g.drawImage(getImage(), x, y, null);
     }
 }

@@ -47,7 +47,7 @@ public class GameClient extends JComponent {
      */
     public void init() {
         playerTank = new Tank(250, 250, Direction.UP);
-        playerTank.setSpeed(20);
+        playerTank.setSpeed(5);
     }
 
     /**
