@@ -4,9 +4,7 @@ import java.awt.*;
 
 import javax.swing.ImageIcon;;
 
-public class Tank {
-    private int x;
-    private int y;
+public class Tank extends GameObject {
     private int speed;
     private Direction direction;
     // 上: bit3, 下: bit2, 左: bit1, 右: bit0
@@ -14,33 +12,12 @@ public class Tank {
 
     private boolean enemy;
 
-    public Tank(int x, int y, Direction direction) {
-        this(x, y, direction, false);
-    }
-
-    public Tank(int x, int y, Direction direction, boolean enemy) {
-        this.x = x;
-        this.y = y;
+    public Tank(Image[] image, int x, int y, Direction direction, boolean enemy) {
+        super(image, x, y);
         this.direction = direction;
         this.speed = 5;
         dirs = 0b0000;
         this.enemy = enemy;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public void setSpeed(int speed) {
@@ -61,45 +38,6 @@ public class Tank {
 
     public void setDirs(int dirs) {
         this.dirs = dirs;
-    }
-
-    /**
-     * 坦克方向圖片
-     * 
-     * @return
-     */
-    public Image getImage() {
-        String name = enemy ? "etank" : "itank";
-        String direction;
-        switch (this.direction) {
-            case UP:
-                direction = "U";
-                break;
-            case DOWN:
-                direction = "D";
-                break;
-            case LEFT:
-                direction = "L";
-                break;
-            case RIGHT:
-                direction = "R";
-                break;
-            case UP_LEFT:
-                direction = "LU";
-                break;
-            case UP_RIGHT:
-                direction = "RU";
-                break;
-            case DOWN_LEFT:
-                direction = "LD";
-                break;
-            case DOWN_RIGHT:
-                direction = "RD";
-                break;
-            default:
-                return null;
-        }
-        return new ImageIcon(String.format("assets/images/%s%s.png", name, direction)).getImage();
     }
 
     // 避免上下或者左右一起按
@@ -177,12 +115,12 @@ public class Tank {
         return this.dirs == 0 ? true : false;
     }
 
-    // 更新畫面
+    @Override
     public void draw(Graphics g) {
         if (!isStop()) {
             determineDirection();
             move();
         }
-        g.drawImage(getImage(), x, y, null);
+        g.drawImage(image[direction.ordinal()], x, y, null);
     }
 }

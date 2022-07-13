@@ -3,6 +3,7 @@ package tw.com.jimhsu;
 import javax.swing.*;
 
 import tw.com.jimhsu.gameobject.Direction;
+import tw.com.jimhsu.gameobject.GameObject;
 import tw.com.jimhsu.gameobject.Tank;
 import tw.com.jimhsu.gameobject.Wall;
 
@@ -16,8 +17,7 @@ public class GameClient extends JComponent {
     private int screenHeight;
 
     private Tank playerTank;
-    private ArrayList<Tank> enemyTank = new ArrayList<Tank>();
-    private ArrayList<Wall> walls = new ArrayList<Wall>();
+    private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 
     GameClient() {
         this(800, 600);
@@ -52,20 +52,33 @@ public class GameClient extends JComponent {
      */
     public void init() {
         // 牆面
-        Image wallImg = new ImageIcon("assets/images/brick.png").getImage();
 
-        playerTank = new Tank(380, 500, Direction.UP);
+        String[] ext = { "U", "D", "L", "R", "LU", "RU", "LD", "RD" };
+        Image[] iTankImg = new Image[ext.length];
+        Image[] eTankImg = new Image[ext.length];
+
+        // UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT
+        for (int i = 0; i < ext.length; i++) {
+            iTankImg[i] = new ImageIcon("assets/images/itank" + ext[i] + ".png").getImage();
+            eTankImg[i] = new ImageIcon("assets/images/etank" + ext[i] + ".png").getImage();
+        }
+
+        // 玩家物件
+        playerTank = new Tank(iTankImg, 380, 500, Direction.UP, false);
         playerTank.setSpeed(5);
 
+        gameObjects.add(playerTank);
+        // 產生敵方
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
-                enemyTank.add(new Tank(200 + j * 60, 50 + i * 60, Direction.DOWN, true));
+                gameObjects.add(new Tank(eTankImg, 200 + j * 60, 50 + i * 60, Direction.DOWN, true));
             }
         }
 
-        walls.add(new Wall(wallImg, 80, 10, false, 15));
-        walls.add(new Wall(wallImg, 140, 10, true, 10));
-        walls.add(new Wall(wallImg, 640, 10, false, 15));
+        Image[] wallImg = { new ImageIcon("assets/images/brick.png").getImage() };
+        gameObjects.add(new Wall(wallImg, 80, 10, false, 15));
+        gameObjects.add(new Wall(wallImg, 140, 10, true, 10));
+        gameObjects.add(new Wall(wallImg, 640, 10, false, 15));
     }
 
     /**
@@ -134,17 +147,9 @@ public class GameClient extends JComponent {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, screenWidth, screenHeight);
 
-        // 我方
-        playerTank.draw(g);
-
-        // 敵方
-        for (Tank tank : enemyTank) {
-            tank.draw(g);
-        }
-
-        // 牆面
-        for (Wall wall : walls) {
-            wall.draw(g);
+        // 多型
+        for (GameObject object : gameObjects) {
+            object.draw(g);
         }
     }
 }
