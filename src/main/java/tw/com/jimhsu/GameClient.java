@@ -46,10 +46,10 @@ public class GameClient extends JComponent {
     }
 
     /**
-     * 初始化我方坦克方向
+     * 初始化
      */
     public void init() {
-        playerTank = new Tank(380, 500, Direction.UP, false);
+        playerTank = new Tank(380, 500, Direction.UP);
         playerTank.setSpeed(5);
 
         for (int i = 0; i < 3; i++) {

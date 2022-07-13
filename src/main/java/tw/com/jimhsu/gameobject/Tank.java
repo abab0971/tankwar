@@ -14,6 +14,10 @@ public class Tank {
 
     private boolean enemy;
 
+    public Tank(int x, int y, Direction direction) {
+        this(x, y, direction, false);
+    }
+
     public Tank(int x, int y, Direction direction, boolean enemy) {
         this.x = x;
         this.y = y;
