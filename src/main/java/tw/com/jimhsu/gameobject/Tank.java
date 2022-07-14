@@ -6,7 +6,7 @@ import tw.com.jimhsu.App;
 
 public class Tank extends GameObject {
     private int speed;
-    private Direction direction;
+    protected Direction direction;
     // 上: bit3, 下: bit2, 左: bit1, 右: bit0
     private int dirs;
 
@@ -140,12 +140,28 @@ public class Tank extends GameObject {
             if (object == this) {
                 continue;
             }
+            if (object instanceof Tank) {
+                // 向下轉型
+                if (((Tank) object).enemy == enemy) {
+                    continue;
+                }
+            }
+
+            // 實際偵測碰撞
             if (getRectangle().intersects(object.getRectangle())) {
+                // 返回沒碰撞前的位置
                 x = preX;
                 y = preY;
                 return;
             }
         }
+    }
+
+    /**
+     * 發射子彈
+     */
+    public void fire() {
+        App.gameClient.getGameObjects().add(new Bullet(App.gameClient.getBulletImage(), x, y, direction, enemy));
     }
 
     @Override
