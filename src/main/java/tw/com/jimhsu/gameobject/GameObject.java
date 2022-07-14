@@ -17,6 +17,10 @@ public abstract class GameObject {
         this.heightImage = image[0].getHeight(null);
     }
 
+    public Rectangle getRectangle() {
+        return new Rectangle(x, y, widthImage, heightImage);
+    }
+
     public abstract void draw(Graphics g);
 
     public int getX() {

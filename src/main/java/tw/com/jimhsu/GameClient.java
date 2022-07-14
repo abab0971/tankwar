@@ -133,6 +133,10 @@ public class GameClient extends JComponent {
         return this.screenHeight;
     }
 
+    public ArrayList<GameObject> getGameObjects() {
+        return gameObjects;
+    }
+
     @Override
     public String toString() {
         return "{" +

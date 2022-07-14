@@ -2,10 +2,7 @@ package tw.com.jimhsu.gameobject;
 
 import java.awt.*;
 
-import javax.swing.ImageIcon;
-
 import tw.com.jimhsu.App;
-import tw.com.jimhsu.GameClient;;
 
 public class Tank extends GameObject {
     private int speed;
@@ -131,11 +128,24 @@ public class Tank extends GameObject {
         return this.dirs == 0 ? true : false;
     }
 
+    public void collision() {
+        for (GameObject object : App.gameClient.getGameObjects()) {
+            if (object == this) {
+                continue;
+            }
+            if (object instanceof Tank && getRectangle().intersects(object.getRectangle())) {
+                System.out.println("hit");
+                return;
+            }
+        }
+    }
+
     @Override
     public void draw(Graphics g) {
         if (!isStop()) {
             determineDirection();
             move();
+            collision();
         }
         g.drawImage(image[direction.ordinal()], x, y, null);
     }

@@ -33,13 +33,11 @@ public final class App extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println("press! " + e.getKeyChar());
                 gameClient.keyPressed(e);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                System.out.println("release!");
                 gameClient.keyReleased(e);
             }
         });
