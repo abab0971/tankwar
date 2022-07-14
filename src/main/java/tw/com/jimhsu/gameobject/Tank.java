@@ -258,6 +258,7 @@ public class Tank extends GameObject {
     public void getNewDirection() {
         int dr = direction.ordinal() + new Random().nextInt(5) - 2;
         dr = ((dr < 0) ? dr += 8 : dr) % Direction.values().length;
+        // int dr = new Random().nextInt((Direction.values().length));
 
         // System.out.printf("[%d]org: %s, new: %s\n", dr,
         // Integer.toBinaryString(this.dirs),
@@ -291,12 +292,14 @@ public class Tank extends GameObject {
             return;
         }
 
+        // 是否碰撞
         if (isCollision) {
             getNewDirection();
             isCollision = false;
             return;
         }
 
+        // 進行亂數移動
         Random random = new Random();
 
         // 移動

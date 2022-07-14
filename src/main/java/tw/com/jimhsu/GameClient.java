@@ -4,21 +4,26 @@ import javax.swing.*;
 
 import tw.com.jimhsu.gameobject.Direction;
 import tw.com.jimhsu.gameobject.GameObject;
+import tw.com.jimhsu.gameobject.PlayerTank;
 import tw.com.jimhsu.gameobject.Tank;
 import tw.com.jimhsu.gameobject.Wall;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameClient extends JComponent {
     private int screenWidth;
     private int screenHeight;
 
-    private Tank playerTank;
+    private PlayerTank playerTank;
     private CopyOnWriteArrayList<GameObject> gameObjects = new CopyOnWriteArrayList<GameObject>();
 
     private Image[] bulletImage;
+    private Image[] wallImg;
+    private Image[] iTankImg;
+    private Image[] eTankImg;
 
     GameClient() {
         this(800, 600);
@@ -53,12 +58,14 @@ public class GameClient extends JComponent {
      * 初始化
      */
     public void init() {
-        // 牆面
-
         // String[] ext = { "U", "D", "L", "R", "LU", "RU", "LD", "RD" };
         String[] ext = { "U", "RU", "R", "RD", "D", "LD", "L", "LU" };
-        Image[] iTankImg = new Image[ext.length];
-        Image[] eTankImg = new Image[ext.length];
+
+        // 牆面
+        wallImg = new Image[] { new ImageIcon("assets/images/brick.png").getImage() };
+
+        iTankImg = new Image[ext.length];
+        eTankImg = new Image[ext.length];
         bulletImage = new Image[ext.length];
 
         // UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT
@@ -68,10 +75,20 @@ public class GameClient extends JComponent {
             bulletImage[i] = new ImageIcon("assets/images/missile" + ext[i] + ".png").getImage();
         }
 
-        // 玩家物件
-        playerTank = new Tank(iTankImg, 380, 500, Direction.UP, false);
-        playerTank.setSpeed(5);
+        initGame();
+    }
 
+    // 重置遊戲
+    void initGame() {
+        // 釋放遊戲資源
+        for (GameObject object : gameObjects) {
+            gameObjects.remove(object);
+        }
+
+        // 玩家物件
+        playerTank = new PlayerTank(iTankImg, 380, 500, Direction.UP);
+        // playerTank.setEnemy(true);
+        playerTank.setSpeed(5);
         gameObjects.add(playerTank);
         // 產生敵方
         for (int i = 0; i < 3; i++) {
@@ -81,10 +98,39 @@ public class GameClient extends JComponent {
             }
         }
 
-        Image[] wallImg = { new ImageIcon("assets/images/brick.png").getImage() };
-        gameObjects.add(new Wall(wallImg, 80, 10, false, 15));
-        gameObjects.add(new Wall(wallImg, 140, 10, true, 10));
-        gameObjects.add(new Wall(wallImg, 640, 10, false, 15));
+        geneWall(20);
+        // 牆面配置
+        // gameObjects.add(new Wall(wallImg, 80, 10, false, 15));
+        // gameObjects.add(new Wall(wallImg, 140, 10, true, 10));
+        // gameObjects.add(new Wall(wallImg, 640, 10, false, 15));
+
+    }
+
+    public void geneWall(int nums) {
+        Random random = new Random();
+
+        for (int i = 0; i < nums; i++) {
+            int x = random.nextInt(screenWidth - wallImg[0].getWidth(null));
+            int y = random.nextInt(screenHeight - wallImg[0].getHeight(null));
+
+            gameObjects.add(new Wall(wallImg, x, y, false, 1));
+        }
+    }
+
+    public void checkGameState() {
+        boolean gameOver = true;
+
+        for (GameObject object : gameObjects) {
+            if (object instanceof Tank && ((Tank) object).isEnemy()) {
+                gameOver = false;
+                break;
+            }
+        }
+
+        if (gameOver) {
+            initGame();
+        }
+
     }
 
     /**
@@ -115,6 +161,12 @@ public class GameClient extends JComponent {
                 break;
             case KeyEvent.VK_CONTROL:
                 playerTank.fire();
+                break;
+            case KeyEvent.VK_S:
+                playerTank.superFire();
+                break;
+            case KeyEvent.VK_Z:
+                initGame();
                 break;
         }
         playerTank.setDirs(dirs);
@@ -191,5 +243,7 @@ public class GameClient extends JComponent {
                 gameObjects.remove(object);
             }
         }
+        // 判斷遊戲是否結束
+        checkGameState();
     }
 }
