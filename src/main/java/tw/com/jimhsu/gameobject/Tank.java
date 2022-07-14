@@ -74,6 +74,8 @@ public class Tank extends GameObject {
      * 移動
      */
     public void move() {
+        preX = x;
+        preY = y;
         switch (direction) {
             case UP:
                 y -= speed;
@@ -128,6 +130,9 @@ public class Tank extends GameObject {
         return this.dirs == 0 ? true : false;
     }
 
+    /**
+     * 碰撞偵測
+     */
     public void collision() {
         for (GameObject object : App.gameClient.getGameObjects()) {
             if (object == this) {
@@ -135,6 +140,8 @@ public class Tank extends GameObject {
             }
             if (object instanceof Tank && getRectangle().intersects(object.getRectangle())) {
                 System.out.println("hit");
+                x = preX;
+                y = preY;
                 return;
             }
         }

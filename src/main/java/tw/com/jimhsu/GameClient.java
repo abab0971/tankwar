@@ -68,9 +68,9 @@ public class GameClient extends JComponent {
 
         gameObjects.add(playerTank);
         // 產生敵方
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 7; j++) {
-                gameObjects.add(new Tank(eTankImg, 200 + j * 60, 50 + i * 60, Direction.DOWN, true));
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                gameObjects.add(new Tank(eTankImg, 200 + j * 100, 50 + i * 100, Direction.DOWN, true));
             }
         }
 
