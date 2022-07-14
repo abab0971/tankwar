@@ -1,6 +1,9 @@
 package tw.com.jimhsu.gameobject;
 
 import java.awt.*;
+import java.util.Random;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import tw.com.jimhsu.App;
 
@@ -12,12 +15,15 @@ public class Tank extends GameObject {
 
     private boolean enemy;
 
+    protected boolean isCollision;
+
     public Tank(Image[] image, int x, int y, Direction direction, boolean enemy) {
         super(image, x, y);
         this.direction = direction;
         this.speed = 5;
         dirs = 0b0000;
         this.enemy = enemy;
+        this.isCollision = false;
     }
 
     public void setSpeed(int speed) {
@@ -192,10 +198,57 @@ public class Tank extends GameObject {
         App.gameClient.getGameObjects().add(bullet);
     }
 
+    /**
+     * 取得新方向
+     */
+    public void getNewDirection() {
+        Random random = new Random();
+        int dr = random.nextInt(0b1111);
+        switch (dr) {
+            case 0b1000:
+            case 0b0100:
+            case 0b0010:
+            case 0b0001:
+            case 0b1010:
+            case 0b1001:
+            case 0b0110:
+            case 0b0101:
+                dirs = dr;
+                break;
+            default:
+                dirs = dirs;
+        }
+    }
+
     @Override
     public Rectangle getRectangle() {
         int padding = 8;
         return new Rectangle(x + padding, y + padding, widthImage - padding, heightImage - padding);
+    }
+
+    @Override
+    public void ai() {
+        if (!enemy) {
+            return;
+        }
+
+        if (isCollision) {
+            getNewDirection();
+            isCollision = false;
+            return;
+        }
+
+        Random random = new Random();
+
+        // 移動
+        if (random.nextInt(50) == 1) {
+            getNewDirection();
+        }
+
+        // 開火
+        if (random.nextInt(100) == 1) {
+            fire();
+        }
     }
 
     @Override
@@ -204,6 +257,8 @@ public class Tank extends GameObject {
         if (!alive) {
             return;
         }
+
+        ai();
 
         if (!isStop()) {
             determineDirection();

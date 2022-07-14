@@ -21,6 +21,12 @@ public class Wall extends GameObject {
     }
 
     @Override
+    public void ai() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     public void draw(Graphics g) {
         for (int i = 0; i < bricks; i++) {
             if (horizontal) {

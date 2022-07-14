@@ -9,7 +9,6 @@ import tw.com.jimhsu.gameobject.Wall;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameClient extends JComponent {

@@ -35,6 +35,8 @@ public abstract class GameObject {
         return pos;
     }
 
+    public abstract void ai();
+
     public abstract void draw(Graphics g);
 
     public int getX() {
