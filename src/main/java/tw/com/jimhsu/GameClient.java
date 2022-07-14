@@ -10,13 +10,14 @@ import tw.com.jimhsu.gameobject.Wall;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameClient extends JComponent {
     private int screenWidth;
     private int screenHeight;
 
     private Tank playerTank;
-    private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+    private CopyOnWriteArrayList<GameObject> gameObjects = new CopyOnWriteArrayList<GameObject>();
 
     private Image[] bulletImage;
 
@@ -41,6 +42,7 @@ public class GameClient extends JComponent {
                 repaint();
                 try {
                     Thread.sleep(25);
+                    System.out.println(gameObjects.size());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -141,7 +143,7 @@ public class GameClient extends JComponent {
         return this.screenHeight;
     }
 
-    public ArrayList<GameObject> getGameObjects() {
+    public CopyOnWriteArrayList<GameObject> getGameObjects() {
         return gameObjects;
     }
 
@@ -165,6 +167,13 @@ public class GameClient extends JComponent {
         // 多型
         for (GameObject object : gameObjects) {
             object.draw(g);
+        }
+
+        // 生命週期結束，釋放物件
+        for (GameObject object : gameObjects) {
+            if (!object.getAlive()) {
+                gameObjects.remove(object);
+            }
         }
     }
 }

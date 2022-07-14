@@ -26,6 +26,15 @@ public abstract class GameObject {
         return new Rectangle(x, y, widthImage, heightImage);
     }
 
+    public int[] getCenterPos(Rectangle rect) {
+        int[] pos = new int[2];
+
+        pos[0] = this.x + (widthImage - rect.width) / 2;
+        pos[1] = this.y + (heightImage - rect.height) / 2;
+
+        return pos;
+    }
+
     public abstract void draw(Graphics g);
 
     public int getX() {

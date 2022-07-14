@@ -44,6 +44,10 @@ public class Tank extends GameObject {
         return enemy;
     }
 
+    public int getSpeed() {
+        return this.speed;
+    }
+
     // 避免上下或者左右一起按
     private void determineDirection() {
         switch (dirs) {
@@ -180,7 +184,12 @@ public class Tank extends GameObject {
      * 發射子彈
      */
     public void fire() {
-        App.gameClient.getGameObjects().add(new Bullet(App.gameClient.getBulletImage(), x, y, direction, enemy));
+        Bullet bullet = new Bullet(App.gameClient.getBulletImage(), 0, 0, direction, enemy);
+        int[] pos = getCenterPos(bullet.getRectangle());
+        bullet.setX(pos[0]);
+        bullet.setY(pos[1]);
+
+        App.gameClient.getGameObjects().add(bullet);
     }
 
     @Override
