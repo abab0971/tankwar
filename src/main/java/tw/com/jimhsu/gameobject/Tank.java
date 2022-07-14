@@ -139,12 +139,17 @@ public class Tank extends GameObject {
                 continue;
             }
             if (object instanceof Tank && getRectangle().intersects(object.getRectangle())) {
-                System.out.println("hit");
                 x = preX;
                 y = preY;
                 return;
             }
         }
+    }
+
+    @Override
+    public Rectangle getRectangle() {
+        int padding = 8;
+        return new Rectangle(x + padding, y + padding, widthImage - padding, heightImage - padding);
     }
 
     @Override
