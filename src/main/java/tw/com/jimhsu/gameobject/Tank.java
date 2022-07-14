@@ -6,22 +6,25 @@ import java.util.Random;
 import tw.com.jimhsu.App;
 
 public class Tank extends GameObject {
-    private int speed;
+    protected int speed;
     protected Direction direction;
     // 上: bit3, 下: bit2, 左: bit1, 右: bit0
     private int dirs;
 
-    private boolean enemy;
+    protected boolean enemy;
 
     protected boolean isCollision;
+
+    protected int hp;
 
     public Tank(Image[] image, int x, int y, Direction direction, boolean enemy) {
         super(image, x, y);
         this.direction = direction;
-        this.speed = 5;
-        dirs = 0b0000;
+        this.speed = 10;
+        this.dirs = 0b0000;
         this.enemy = enemy;
         this.isCollision = false;
+        this.hp = 1;
     }
 
     public void setSpeed(int speed) {
@@ -185,6 +188,18 @@ public class Tank extends GameObject {
     }
 
     /**
+     * 扣血
+     * 
+     * @param damage
+     */
+    public void getHurt(int damage) {
+        if (--hp <= 0) {
+            hp = 0;
+            alive = false;
+        }
+    }
+
+    /**
      * 邊界限制
      * 
      * @return
@@ -243,6 +258,10 @@ public class Tank extends GameObject {
      * 發射子彈
      */
     public void fire() {
+        if (!alive) {
+            return;
+        }
+
         Bullet bullet = new Bullet(App.gameClient.getBulletImage(), 0, 0, direction, enemy);
         int[] pos = getCenterPos(bullet.getRectangle());
         bullet.setX(pos[0]);
