@@ -11,12 +11,15 @@ public abstract class GameObject {
     protected int widthImage;
     protected int heightImage;
 
+    protected boolean alive;
+
     public GameObject(Image[] image, int x, int y) {
         this.x = x;
         this.y = y;
         this.image = image;
         this.widthImage = image[0].getWidth(null);
         this.heightImage = image[0].getHeight(null);
+        alive = true;
     }
 
     public Rectangle getRectangle() {
@@ -47,5 +50,9 @@ public abstract class GameObject {
 
     public void setImage(Image[] image) {
         this.image = image;
+    }
+
+    public boolean getAlive() {
+        return alive;
     }
 }

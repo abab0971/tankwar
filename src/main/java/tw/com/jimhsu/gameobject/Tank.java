@@ -40,6 +40,10 @@ public class Tank extends GameObject {
         this.dirs = dirs;
     }
 
+    public boolean isEnemy() {
+        return enemy;
+    }
+
     // 避免上下或者左右一起按
     private void determineDirection() {
         switch (dirs) {
@@ -118,21 +122,36 @@ public class Tank extends GameObject {
     }
 
     /**
+     * 邊界限制
+     * 
+     * @return
+     */
+    public boolean isCollisionBound() {
+        boolean isCollision = false;
+        if (x < 0) {
+            x = 0;
+            isCollision = true;
+        } else if (x > App.gameClient.getScreenWidth() - this.widthImage) {
+            x = App.gameClient.getScreenWidth() - this.widthImage;
+            isCollision = true;
+        }
+        if (y < 0) {
+            y = 0;
+            isCollision = true;
+        } else if (y > App.gameClient.getScreenHeight() - this.heightImage) {
+            y = App.gameClient.getScreenHeight() - this.heightImage;
+            isCollision = true;
+        }
+        return isCollision;
+    }
+
+    /**
      * 碰撞偵測(邊界、敵方、牆面、彈道)
      */
     public void collision() {
 
-        // 邊界限制
-        if (x < 0) {
-            x = 0;
-        } else if (x > App.gameClient.getScreenWidth() - this.widthImage) {
-            x = App.gameClient.getScreenWidth() - this.widthImage;
-            ;
-        }
-        if (y < 0) {
-            y = 0;
-        } else if (y > App.gameClient.getScreenHeight() - this.heightImage) {
-            y = App.gameClient.getScreenHeight() - this.heightImage;
+        if (isCollisionBound()) {
+            return;
         }
 
         // 多型物件偵測
@@ -172,6 +191,11 @@ public class Tank extends GameObject {
 
     @Override
     public void draw(Graphics g) {
+
+        if (!alive) {
+            return;
+        }
+
         if (!isStop()) {
             determineDirection();
             move();
