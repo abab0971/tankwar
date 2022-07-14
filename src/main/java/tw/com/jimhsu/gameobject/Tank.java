@@ -3,8 +3,6 @@ package tw.com.jimhsu.gameobject;
 import java.awt.*;
 import java.util.Random;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 import tw.com.jimhsu.App;
 
 public class Tank extends GameObject {
@@ -54,34 +52,89 @@ public class Tank extends GameObject {
         return this.speed;
     }
 
-    // 避免上下或者左右一起按
+    /**
+     * 避免上下或者左右一起按
+     * 1000: 上
+     * 1100: 右上
+     * 0100: 右
+     * 0110: 右下
+     * 0010: 下
+     * 0011: 左下
+     * 0001: 左
+     * 1001: 左上
+     */
     private void determineDirection() {
         switch (dirs) {
             case 0b1000:
                 direction = Direction.UP;
                 break;
-            case 0b0100:
-                direction = Direction.DOWN;
-                break;
-            case 0b0010:
-                direction = Direction.LEFT;
-                break;
-            case 0b0001:
-                direction = Direction.RIGHT;
-                break;
-            case 0b1010:
-                direction = Direction.UP_LEFT;
-                break;
-            case 0b1001:
+            case 0b1100:
                 direction = Direction.UP_RIGHT;
                 break;
-            case 0b0110:
-                direction = Direction.DOWN_LEFT;
+            case 0b0100:
+                direction = Direction.RIGHT;
                 break;
-            case 0b0101:
+            case 0b0110:
                 direction = Direction.DOWN_RIGHT;
                 break;
+            case 0b0010:
+                direction = Direction.DOWN;
+                break;
+            case 0b0011:
+                direction = Direction.DOWN_LEFT;
+                break;
+            case 0b0001:
+                direction = Direction.LEFT;
+                break;
+            case 0b1001:
+                direction = Direction.UP_LEFT;
+                break;
         }
+    }
+
+    /**
+     * 反解析方向數值
+     * 1000: 上
+     * 1100: 右上
+     * 0100: 右
+     * 0110: 右下
+     * 0010: 下
+     * 0011: 左下
+     * 0001: 左
+     * 1001: 左上
+     * 
+     * @param direction
+     * @return
+     */
+    private int reverseDirection(Direction direction) {
+        int dirs = 0;
+        switch (direction) {
+            case UP:
+                dirs = 0b1000;
+                break;
+            case RIGHT:
+                dirs = 0b0100;
+                break;
+            case DOWN:
+                dirs = 0b0010;
+                break;
+            case LEFT:
+                dirs = 0b0001;
+                break;
+            case UP_RIGHT:
+                dirs = 0b1100;
+                break;
+            case DOWN_RIGHT:
+                dirs = 0b0110;
+                break;
+            case DOWN_LEFT:
+                dirs = 0b0011;
+                break;
+            case UP_LEFT:
+                dirs = 0b1001;
+                break;
+        }
+        return dirs;
     }
 
     /**
@@ -137,22 +190,21 @@ public class Tank extends GameObject {
      * @return
      */
     public boolean isCollisionBound() {
-        boolean isCollision = false;
         if (x < 0) {
             x = 0;
-            isCollision = true;
+            return true;
         } else if (x > App.gameClient.getScreenWidth() - this.widthImage) {
             x = App.gameClient.getScreenWidth() - this.widthImage;
-            isCollision = true;
+            return true;
         }
         if (y < 0) {
             y = 0;
-            isCollision = true;
+            return true;
         } else if (y > App.gameClient.getScreenHeight() - this.heightImage) {
             y = App.gameClient.getScreenHeight() - this.heightImage;
-            isCollision = true;
+            return true;
         }
-        return isCollision;
+        return false;
     }
 
     /**
@@ -161,6 +213,7 @@ public class Tank extends GameObject {
     public void collision() {
 
         if (isCollisionBound()) {
+            isCollision = true;
             return;
         }
 
@@ -200,25 +253,31 @@ public class Tank extends GameObject {
 
     /**
      * 取得新方向
+     * 以正向為主5個方向
      */
     public void getNewDirection() {
-        Random random = new Random();
-        int dr = random.nextInt(0b1111);
-        switch (dr) {
-            case 0b1000:
-            case 0b0100:
-            case 0b0010:
-            case 0b0001:
-            case 0b1010:
-            case 0b1001:
-            case 0b0110:
-            case 0b0101:
-                dirs = dr;
-                break;
-            default:
-                dirs = dirs;
-        }
+        int dr = direction.ordinal() + new Random().nextInt(5) - 2;
+        dr = ((dr < 0) ? dr += 8 : dr) % Direction.values().length;
+
+        // System.out.printf("[%d]org: %s, new: %s\n", dr,
+        // Integer.toBinaryString(this.dirs),
+        // Integer.toBinaryString(reverseDirection(Direction.values()[dr])));
+
+        this.dirs = reverseDirection(Direction.values()[dr]);
     }
+
+    // /**
+    // * 碰撞時取得新方向
+    // * 以正向為主取左右方向
+    // */
+    // public void getNewDirectionInCollision() {
+    // int dr = (direction.ordinal()) + ((new Random().nextInt(2) == 0) ? 2 : -2);
+    // dr = ((dr < 0) ? dr += 8 : dr) % Direction.values().length;
+    // System.out.printf("[%d]org: %s, new: %s\n", dr,
+    // Integer.toBinaryString(this.dirs),
+    // Integer.toBinaryString(reverseDirection(Direction.values()[dr])));
+    // this.dirs = reverseDirection(Direction.values()[dr]);
+    // }
 
     @Override
     public Rectangle getRectangle() {

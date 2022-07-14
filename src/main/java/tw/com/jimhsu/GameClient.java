@@ -41,7 +41,7 @@ public class GameClient extends JComponent {
                 repaint();
                 try {
                     Thread.sleep(25);
-                    System.out.println(gameObjects.size());
+                    // System.out.println(gameObjects.size());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -55,7 +55,8 @@ public class GameClient extends JComponent {
     public void init() {
         // 牆面
 
-        String[] ext = { "U", "D", "L", "R", "LU", "RU", "LD", "RD" };
+        // String[] ext = { "U", "D", "L", "R", "LU", "RU", "LD", "RD" };
+        String[] ext = { "U", "RU", "R", "RD", "D", "LD", "L", "LU" };
         Image[] iTankImg = new Image[ext.length];
         Image[] eTankImg = new Image[ext.length];
         bulletImage = new Image[ext.length];
@@ -88,6 +89,14 @@ public class GameClient extends JComponent {
 
     /**
      * 按鍵事件(上緣)
+     * 1000: 上
+     * 1100: 右上
+     * 0100: 右
+     * 0110: 右下
+     * 0010: 下
+     * 0011: 左下
+     * 0001: 左
+     * 1001: 左上
      */
     public void keyPressed(KeyEvent e) {
         int dirs = playerTank.getDirs();
@@ -95,13 +104,13 @@ public class GameClient extends JComponent {
             case KeyEvent.VK_UP:
                 dirs |= 0b1000;
                 break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_RIGHT:
                 dirs |= 0b0100;
                 break;
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_DOWN:
                 dirs |= 0b0010;
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_LEFT:
                 dirs |= 0b0001;
                 break;
             case KeyEvent.VK_CONTROL:
@@ -114,6 +123,14 @@ public class GameClient extends JComponent {
 
     /**
      * 按鍵事件(下緣)
+     * 1000: 上
+     * 1100: 右上
+     * 0100: 右
+     * 0110: 右下
+     * 0010: 下
+     * 0011: 左下
+     * 0001: 左
+     * 1001: 左上
      */
     public void keyReleased(KeyEvent e) {
         int dirs = playerTank.getDirs();
@@ -121,13 +138,13 @@ public class GameClient extends JComponent {
             case KeyEvent.VK_UP:
                 dirs &= ~0b1000;
                 break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_RIGHT:
                 dirs &= ~0b0100;
                 break;
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_DOWN:
                 dirs &= ~0b0010;
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_LEFT:
                 dirs &= ~0b0001;
                 break;
         }
