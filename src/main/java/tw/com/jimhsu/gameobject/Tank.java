@@ -51,6 +51,10 @@ public class Tank extends GameObject {
         return enemy;
     }
 
+    public void setEnemy(boolean enemy) {
+        this.enemy = enemy;
+    }
+
     public int getSpeed() {
         return this.speed;
     }
@@ -208,14 +212,16 @@ public class Tank extends GameObject {
         if (x < 0) {
             x = 0;
             return true;
-        } else if (x > App.gameClient.getScreenWidth() - this.widthImage) {
+        }
+        if (x > App.gameClient.getScreenWidth() - this.widthImage) {
             x = App.gameClient.getScreenWidth() - this.widthImage;
             return true;
         }
         if (y < 0) {
             y = 0;
             return true;
-        } else if (y > App.gameClient.getScreenHeight() - this.heightImage) {
+        }
+        if (y > App.gameClient.getScreenHeight() - this.heightImage) {
             y = App.gameClient.getScreenHeight() - this.heightImage;
             return true;
         }
@@ -228,6 +234,7 @@ public class Tank extends GameObject {
     public void collision() {
 
         if (isCollisionBound()) {
+            System.out.println("isCollisionBound");
             isCollision = true;
             return;
         }
@@ -275,10 +282,13 @@ public class Tank extends GameObject {
      * 以正向為主5個方向
      */
     public void getNewDirection() {
-        int dr = direction.ordinal() + new Random().nextInt(5) - 2;
+        int offset = new Random().nextInt(5) - 2;
+        // int dr = direction.ordinal() + new Random().nextInt(5) - 2;
+        int dr = direction.ordinal() + offset;
         dr = ((dr < 0) ? dr += 8 : dr) % Direction.values().length;
         // int dr = new Random().nextInt((Direction.values().length));
 
+        System.out.printf("org: %d, new: %d, offset: %d\n", direction.ordinal(), dr, offset);
         // System.out.printf("[%d]org: %s, new: %s\n", dr,
         // Integer.toBinaryString(this.dirs),
         // Integer.toBinaryString(reverseDirection(Direction.values()[dr])));

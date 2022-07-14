@@ -12,6 +12,7 @@ public abstract class GameObject {
     protected int heightImage;
 
     protected boolean alive;
+    protected int frame;
 
     public GameObject(Image[] image, int x, int y) {
         this.x = x;

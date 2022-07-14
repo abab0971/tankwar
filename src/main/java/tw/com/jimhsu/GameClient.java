@@ -24,6 +24,7 @@ public class GameClient extends JComponent {
     private Image[] wallImg;
     private Image[] iTankImg;
     private Image[] eTankImg;
+    private Image[] explosionImg;
 
     GameClient() {
         this(800, 600);
@@ -68,6 +69,11 @@ public class GameClient extends JComponent {
         eTankImg = new Image[ext.length];
         bulletImage = new Image[ext.length];
 
+        explosionImg = new Image[11];
+        for (int i = 0; i < explosionImg.length; i++) {
+            explosionImg[i] = new ImageIcon("assets/images/" + i + ".png").getImage();
+        }
+
         // UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT
         for (int i = 0; i < ext.length; i++) {
             iTankImg[i] = new ImageIcon("assets/images/itank" + ext[i] + ".png").getImage();
@@ -91,8 +97,8 @@ public class GameClient extends JComponent {
         playerTank.setSpeed(5);
         gameObjects.add(playerTank);
 
-        geneEnemy(5);
-        geneWall(5);
+        geneEnemy(1);
+        geneWall(10);
     }
 
     /**
@@ -237,6 +243,10 @@ public class GameClient extends JComponent {
 
     public Image[] getBulletImage() {
         return bulletImage;
+    }
+
+    public Image[] getExplosionImg() {
+        return explosionImg;
     }
 
     @Override

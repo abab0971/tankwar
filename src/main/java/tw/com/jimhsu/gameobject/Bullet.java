@@ -55,8 +55,8 @@ public class Bullet extends Tank {
 
                 // 子彈攻擊敵方
                 if (getRectangle().intersects(object.getRectangle())) {
-                    // App.gameClient.getGameObjects().add(new Explosion(
-                    // App.gameClient.getExplosionImg(), object.getX(), object.getY()));
+                    App.gameClient.getGameObjects().add(new Explosion(
+                            App.gameClient.getExplosionImg(), object.getX(), object.getY()));
 
                     ((Tank) object).getHurt(damage);
                     alive = false;
@@ -67,6 +67,10 @@ public class Bullet extends Tank {
             // 實際偵測碰撞
             if (getRectangle().intersects(object.getRectangle())) {
                 // 返回沒碰撞前的位置
+
+                App.gameClient.getGameObjects().add(new Explosion(
+                        App.gameClient.getExplosionImg(), object.getX(), object.getY()));
+
                 alive = false;
                 return;
             }
