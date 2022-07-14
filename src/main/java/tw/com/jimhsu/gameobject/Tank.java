@@ -2,7 +2,10 @@ package tw.com.jimhsu.gameobject;
 
 import java.awt.*;
 
-import javax.swing.ImageIcon;;
+import javax.swing.ImageIcon;
+
+import tw.com.jimhsu.App;
+import tw.com.jimhsu.GameClient;;
 
 public class Tank extends GameObject {
     private int speed;
@@ -103,6 +106,19 @@ public class Tank extends GameObject {
                 y += speed;
                 x += speed;
                 break;
+        }
+
+        // 邊界限制
+        if (x < 0) {
+            x = 0;
+        } else if (x > App.gameClient.getScreenWidth() - this.widthImage) {
+            x = App.gameClient.getScreenWidth() - this.widthImage;
+            ;
+        }
+        if (y < 0) {
+            y = 0;
+        } else if (y > App.gameClient.getScreenHeight() - this.heightImage) {
+            y = App.gameClient.getScreenHeight() - this.heightImage;
         }
     }
 

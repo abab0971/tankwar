@@ -8,12 +8,14 @@ import javax.swing.JFrame;
  * Hello world!
  */
 public final class App extends JFrame {
+    public static GameClient gameClient;
+
     private App() {
         setTitle("坦克大戰");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
 
-        GameClient gameClient = new GameClient();
+        gameClient = new GameClient();
         add(gameClient);
 
         pack();
