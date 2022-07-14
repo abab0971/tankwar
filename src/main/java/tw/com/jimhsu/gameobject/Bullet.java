@@ -29,6 +29,13 @@ public class Bullet extends Tank {
                 if (((Tank) object).isEnemy() == isEnemy()) {
                     continue;
                 }
+
+                // 子彈攻擊敵方
+                if (getRectangle().intersects(object.getRectangle())) {
+                    object.alive = false;
+                    alive = false;
+                    continue;
+                }
             }
 
             // 實際偵測碰撞
