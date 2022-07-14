@@ -106,6 +106,21 @@ public class Tank extends GameObject {
                 x += speed;
                 break;
         }
+    }
+
+    /**
+     * 停止移動檢查
+     * 
+     * @return
+     */
+    public boolean isStop() {
+        return this.dirs == 0 ? true : false;
+    }
+
+    /**
+     * 碰撞偵測(邊界、敵方、牆面、彈道)
+     */
+    public void collision() {
 
         // 邊界限制
         if (x < 0) {
@@ -119,26 +134,13 @@ public class Tank extends GameObject {
         } else if (y > App.gameClient.getScreenHeight() - this.heightImage) {
             y = App.gameClient.getScreenHeight() - this.heightImage;
         }
-    }
 
-    /**
-     * 停止移動檢查
-     * 
-     * @return
-     */
-    public boolean isStop() {
-        return this.dirs == 0 ? true : false;
-    }
-
-    /**
-     * 碰撞偵測
-     */
-    public void collision() {
+        // 多型物件偵測
         for (GameObject object : App.gameClient.getGameObjects()) {
             if (object == this) {
                 continue;
             }
-            if (object instanceof Tank && getRectangle().intersects(object.getRectangle())) {
+            if (getRectangle().intersects(object.getRectangle())) {
                 x = preX;
                 y = preY;
                 return;

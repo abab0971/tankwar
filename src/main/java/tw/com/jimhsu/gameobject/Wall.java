@@ -13,6 +13,14 @@ public class Wall extends GameObject {
     }
 
     @Override
+    public Rectangle getRectangle() {
+        if (horizontal) {
+            return new Rectangle(x, y, bricks * widthImage, heightImage);
+        }
+        return new Rectangle(x, y, widthImage, bricks * heightImage);
+    }
+
+    @Override
     public void draw(Graphics g) {
         for (int i = 0; i < bricks; i++) {
             if (horizontal) {
