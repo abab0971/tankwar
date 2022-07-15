@@ -229,7 +229,7 @@ public class Tank extends GameObject {
     }
 
     /**
-     * 碰撞偵測(邊界、敵方、牆面、彈道)
+     * 碰撞偵測(敵方、牆面、彈道)
      */
     public void collision() {
 
